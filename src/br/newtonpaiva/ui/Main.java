@@ -11,28 +11,29 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        try {
-            Massa massa = new Massa();
-            Cliente cliente = new Cliente();
 
-            String name = JOptionPane.showInputDialog("Entre com o nome do cliente: ");
-            cliente.setNome(name);
-            String tipo = JOptionPane.showInputDialog("Entre com o tipo da massa: ");
-            massa.setMassa(tipo);
-            Double valor = Double.parseDouble(JOptionPane.showInputDialog("Entre com o valor da massa: "));
-            massa.setValor(valor);
+        Massa massa = new Massa();
+        Cliente cliente = new Cliente();
 
-            List<Ingredientes> ingredientes1 = new ArrayList<>();
+        String name = JOptionPane.showInputDialog("Entre com o nome do cliente: ");
+        cliente.setNome(name);
+        String tipo = JOptionPane.showInputDialog("Entre com o tipo da massa: ");
+        massa.setMassa(tipo);
+        Double valor = Double.parseDouble(JOptionPane.showInputDialog("Entre com o valor da massa: "));
+        massa.setValor(valor);
 
-            int opcao;
-            do {
+        List<Ingredientes> ingredientes1 = new ArrayList<>();
+
+        int opcao;
+
+        do {
+            try {
                 opcao = Integer.parseInt(JOptionPane.showInputDialog("Informe os ingredientes escolhidos:\n" +
                         "1 - Bacon\n" +
                         "2 - Mussarela\n" +
                         "3 - Tomate\n" +
                         "4 - Queijo\n" +
                         "5 - Sair"));
-
                 if (opcao == 1) {
                     Ingredientes ingredientes = new Ingredientes();
                     ingredientes.setNome("Bacon");
@@ -52,31 +53,33 @@ public class Main {
                 } else if (opcao != 5) {
                     JOptionPane.showMessageDialog(null, "Número Inválido.");
                 }
-            } while (opcao != 5);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Opção inválida. Por favor, insira um número válido.");
+                opcao = 0;
+            }
+        } while (opcao != 5);
 
-            Pedido pedido = new Pedido();
-            pedido.setCliente(cliente);
-            pedido.setMassa(massa);
-            pedido.setIngredientes(ingredientes1);
+        Pedido pedido = new Pedido();
+        pedido.setCliente(cliente);
+        pedido.setMassa(massa);
+        pedido.setIngredientes(ingredientes1);
 
-            String mensagem = "Pedido feito para: " + pedido.getCliente().getNome() +
-                    "\n" + pedido.getMassa().getMassa() + "\nValor: R$" + pedido.CalculaValor();
+        String mensagem = "Pedido feito para: " + pedido.getCliente().getNome() +
+                "\n" + pedido.getMassa().getMassa() + "\nValor: R$" + pedido.CalculaValor();
 
-            if (pedido.getIngredientes().size() > 0) {
-                for (int a = 0; a < pedido.getIngredientes().size(); a++) {
-                    mensagem += pedido.getIngredientes().get(a).getNome();
-                    if (a < pedido.getIngredientes().size() - 2) {
-                        mensagem += ", ";
-                    } else
-                        mensagem += " e ";
-                }
-            } else
-                mensagem += "nenhum acréscimo e";
-            mensagem += " \n o valor ficou em: R$" + String.format("%.2f",
-                    pedido.CalculaValor()) + " reais";
-            JOptionPane.showMessageDialog(null, mensagem, "Valor do pedido", JOptionPane.PLAIN_MESSAGE);
-        }catch (Exception exception){
-            System.out.println("ERRO ");
-        }
+        if (pedido.getIngredientes().size() > 0) {
+            for (int a = 0; a < pedido.getIngredientes().size(); a++) {
+                mensagem += pedido.getIngredientes().get(a).getNome();
+                if (a < pedido.getIngredientes().size() - 2) {
+                    mensagem += ", ";
+                } else
+                    mensagem += " e ";
+            }
+        } else
+            mensagem += "nenhum acréscimo e";
+        mensagem += " \n o valor ficou em: R$" + String.format("%.2f",
+                pedido.CalculaValor()) + " reais";
+        JOptionPane.showMessageDialog(null, mensagem, "Valor do pedido", JOptionPane.PLAIN_MESSAGE);
+
     }
 }
